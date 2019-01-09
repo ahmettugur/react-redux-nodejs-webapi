@@ -1,5 +1,5 @@
 {
-  "name": "RabbtMqExample",
+  "name": "queue",
   "version": "1.0.0",
   "description": "",
   "main": "send.js",
@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "amqplib": "^0.5.3"
+    "amqplib": "^0.5.3",
+    "socket.io": "^2.2.0"
   }
 }

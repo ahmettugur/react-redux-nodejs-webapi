@@ -148,7 +148,6 @@ router.put("/admin/products", (req, res) => {
 
   promise
     .then(data => {
-      console.log(data);
       if (!data) {
         res.status(400);
         next({ message: "Product was not found", status: 400 });
@@ -160,7 +159,7 @@ router.put("/admin/products", (req, res) => {
             conn.createChannel(function(err, ch) {
               var queue = "products";
               ch.assertQueue(queue, { durable: false });
-              ch.sendToQueue(queue, Buffer.from( JSON.stringify(data)));
+              ch.sendToQueue(queue, Buffer.from( JSON.stringify(product)));
               //console.log(" [x] Sent %s", JSON.stringify(data));
             });
             setTimeout(function() {

@@ -20,6 +20,7 @@ export default class App extends Component {
           <Route path="/web/products/:categoryId?/:page?" component={Products} />
           <Route path="/web/cart" component={CartList} />
           <Route path="/web/productdetail/:productId" component={ProductDetail} />
+          
         </div>
       </div>
     );

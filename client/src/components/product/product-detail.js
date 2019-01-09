@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import io from "socket.io-client";
 import { connect } from "react-redux";
 import { productDetail, addToCart } from "../../actions/index";
 
@@ -7,8 +8,6 @@ import "bootstrap/dist/css/bootstrap.css";
 import bootbox from "bootbox";
 window.jQuery = $;
 require("bootstrap");
-
-const signalR = require("@aspnet/signalr");
 
 class ProductDetail extends Component {
   constructor(props) {
@@ -19,24 +18,43 @@ class ProductDetail extends Component {
     this.props.productDetail(productId);
   }
 
-  setDisplay(stockQuantity){
-    if (stockQuantity <= 0) {
+  componentDidMount() {
+    const socket = io("http://localhost:4000");
+
+    const productId = this.props.match.params.productId;
+
+    socket.emit("roomName", { roomName: productId });
+
+    socket.on("pushNotify", data => {
+      console.log(data.product.unitsInStock)
+      if (parseInt(data.product.unitsInStock)  <= 0) {
+        bootbox.alert({
+          message: "Product stock chnaged!",
+          size: "small"
+        });
+       
+      }
+      this.setDisplay(data.product.unitsInStock)
+      // alert(data.product.productName)
+    });
+  }
+
+  setDisplay(unitsInStock) {
+    if (unitsInStock <= 0) {
       $("#quantityBox").removeClass("displayBlock");
       $("#addtoCartBox").removeClass("displayBlock");
 
       $("#quantityBox").addClass("displayNone");
       $("#addtoCartBox").addClass("displayNone");
 
-
       $("#outofStockBox").removeClass("displayNone");
       $("#outofStockBox").addClass("displayBlock");
-    }else{
+    } else {
       $("#quantityBox").removeClass("displayNone");
       $("#addtoCartBox").removeClass("displayNone");
 
       $("#quantityBox").addClass("displayBlock");
       $("#addtoCartBox").addClass("displayBlock");
-
 
       $("#outofStockBox").removeClass("displayBlock");
       $("#outofStockBox").addClass("displayNone");
@@ -95,7 +113,6 @@ class ProductDetail extends Component {
       display: "inline-block"
     };
 
-
     let displayClass = "";
     let displayClass2 = "";
 
@@ -106,7 +123,6 @@ class ProductDetail extends Component {
       displayClass = "section displayNone";
       displayClass2 = "section displayBlock";
     }
-
 
     return (
       <div>
@@ -130,14 +146,16 @@ class ProductDetail extends Component {
               <div
                 className="btn-minus"
                 onClick={() => this.decrease()}
-                style={displayStyle} >
+                style={displayStyle}
+              >
                 <span className="glyphicon glyphicon-minus" />
               </div>
               <input defaultValue="1" id="quantity" />
               <div
                 className="btn-plus"
                 onClick={() => this.increment()}
-                style={displayStyle}>
+                style={displayStyle}
+              >
                 <span className="glyphicon glyphicon-plus" />
               </div>
             </div>
@@ -147,22 +165,25 @@ class ProductDetail extends Component {
               onClick={() => {
                 this.addToCarts();
               }}
-              className="btn btn-success">
+              className="btn btn-success"
+            >
               <span
                 style={marginRight}
                 className="glyphicon glyphicon-shopping-cart"
-                aria-hidden="true" />
+                aria-hidden="true"
+              />
               Add to cart
             </button>
           </div>
-          <div className={displayClass2} style={paddingBottom} id="outofStockBox">
-            <span
-              style={marginRight}
-              aria-hidden="true"/>
+          <div
+            className={displayClass2}
+            style={paddingBottom}
+            id="outofStockBox"
+          >
+            <span style={marginRight} aria-hidden="true" />
             The product is outof stock
           </div>
         </div>
-
       </div>
     );
   }
