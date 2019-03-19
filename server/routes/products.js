@@ -152,26 +152,25 @@ router.put("/admin/products", (req, res) => {
         res.status(400);
         next({ message: "Product was not found", status: 400 });
       } else {
-
-        amqp.connect(
-          "amqp://localhost",
-          function(err, conn) {
+        try {
+          amqp.connect("amqp://rabbitmq", function(err, conn) {
             conn.createChannel(function(err, ch) {
               var queue = "products";
               ch.assertQueue(queue, { durable: false });
-              ch.sendToQueue(queue, Buffer.from( JSON.stringify(product)));
+              ch.sendToQueue(queue, Buffer.from(JSON.stringify(product)));
               //console.log(" [x] Sent %s", JSON.stringify(data));
             });
             setTimeout(function() {
               conn.close();
               //process.exit(0);
             }, 500);
-          }
-        );
+          });
 
-
-        res.status(204);
-        res.json(data);
+          res.status(204);
+          res.json(data);
+        } catch (error) {
+          console.log(error);
+        }
       }
     })
     .catch(err => {

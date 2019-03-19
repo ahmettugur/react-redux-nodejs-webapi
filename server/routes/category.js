@@ -5,8 +5,10 @@ const router = express.Router();
 //Model
 const Category = require("../models/Category");
 
+var arr = [1,2,3,4,5,6,7,8,9,10]
+
 router.get("/categories", (req, res) => {
-  const promise = Category.find({}).sort({ _id: -1 });
+const promise = Category.find({}).sort({ _id: -1 });
   promise
     .then(categogies => {
       res.json(categogies);

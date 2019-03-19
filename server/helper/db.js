@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 module.exports = () => {
   mongoose.connect(
-    "mongodb://localhost:27017/store",
+    "mongodb://database/store",
     { useNewUrlParser: true }
   );
 

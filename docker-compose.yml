@@ -1,0 +1,39 @@
+version: "3.1"
+
+services: # Tüm Docker container'larımız 'services' altında olacak
+  database: # Mongo server için tanımlama
+    image: mongo # imaj adı
+    ports: # port yönlendirmeleri
+      - "9000:27017"
+  rabbitmq: # Rabbit Mq server için tanımlama
+    build:
+      context: .
+      dockerfile: rabbitmq.Dockerfile
+    ports: # port yönlendirmeleri
+      - "9003:15672"
+  queue: # Queue server için tanımlama
+    build:
+      context: ./queue
+      dockerfile: queue.Dockerfile
+    ports: # port yönlendirmeleri
+      - "5000:3000"
+    links:
+      - rabbitmq
+  server: # Express server için tanımlama
+    build:
+      context: ./server
+      dockerfile: server.Dockerfile
+    ports: # port yönlendirmeleri
+      - "3500:3000"
+    links:
+      - database
+      - queue
+  client: # react server için tanımlama
+    build:
+      context: ./client
+      dockerfile: client.Dockerfile
+    ports: # port yönlendirmeleri
+      - "3600:3000"
+    links:
+      - server
+      - queue

@@ -19,22 +19,21 @@ class ProductDetail extends Component {
   }
 
   componentDidMount() {
-    const socket = io("http://localhost:4000");
+    const socket = io("http://localhost:5000");
 
     const productId = this.props.match.params.productId;
 
     socket.emit("roomName", { roomName: productId });
 
     socket.on("pushNotify", data => {
-      console.log(data.product.unitsInStock)
-      if (parseInt(data.product.unitsInStock)  <= 0) {
+      console.log(data.product.unitsInStock);
+      if (parseInt(data.product.unitsInStock) <= 0) {
         bootbox.alert({
           message: "Product stock chnaged!",
           size: "small"
         });
-       
       }
-      this.setDisplay(data.product.unitsInStock)
+      this.setDisplay(data.product.unitsInStock);
       // alert(data.product.productName)
     });
   }

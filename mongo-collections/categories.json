@@ -1,0 +1,8 @@
+{"_id":{"$oid":"51ba0970ae4ad8cc43bb95db"},"categoryName":"Beverages","categoryID":{"$numberInt":"1"},"description":"Soft drinks"}
+{"_id":{"$oid":"51ba0970ae4ad8cc43bb95dc"},"categoryName":"Condiments","categoryID":{"$numberInt":"2"},"description":"Sweet and savory sauces"}
+{"_id":{"$oid":"51ba0970ae4ad8cc43bb95dd"},"categoryName":"Confections","categoryID":{"$numberInt":"3"},"description":"Desserts"}
+{"_id":{"$oid":"51ba0970ae4ad8cc43bb95de"},"categoryName":"Dairy Products","categoryID":{"$numberInt":"4"},"description":"Dairy Products"}
+{"_id":{"$oid":"51ba0970ae4ad8cc43bb95df"},"categoryName":"Grains/Cereals","categoryID":{"$numberInt":"5"},"description":"Breads"}
+{"_id":{"$oid":"51ba0970ae4ad8cc43bb95e0"},"categoryName":"Meat/Poultry","categoryID":{"$numberInt":"6"},"description":"Prepared meats"}
+{"_id":{"$oid":"51ba0970ae4ad8cc43bb95e1"},"categoryName":"Produce","categoryID":{"$numberInt":"7"},"description":"Dried fruit and bean curd"}
+{"_id":{"$oid":"51ba0970ae4ad8cc43bb95e2"},"categoryName":"Seafood","categoryID":{"$numberInt":"8"},"description":"Seaweed and fish"}
