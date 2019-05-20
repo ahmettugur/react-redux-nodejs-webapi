@@ -1,6 +1,6 @@
 version: "3.1"
 
-services:
+services: # Tüm Docker container'larımız 'services' altında olacak
   proxy:
     build:
       context: .
@@ -10,45 +10,52 @@ services:
     links:
       - first-server
       - second-server
-  database:
+    restart: always
+  database: # Mongo server için tanımlama
     image: mongo # imaj adı
-    ports:
+    ports: # port yönlendirmeleri
       - "9000:27017"
+    restart: always
   rabbitmq: # Rabbit Mq server için tanımlama
     build:
       context: .
       dockerfile: rabbitmq.Dockerfile
-    ports:
+    ports: # port yönlendirmeleri
       - "9003:15672"
-  queue:
+    restart: always
+  queue: # Queue server için tanımlama
     build:
       context: ./queue
       dockerfile: queue.Dockerfile
-    ports:
+    ports: # port yönlendirmeleri
       - "5000:3000"
     links:
       - rabbitmq
-  first-server:
+    restart: always
+  first-server: # İlk Express server için tanımlama
     build:
       context: ./server
       dockerfile: server.Dockerfile
-    ports:
+    ports: # port yönlendirmeleri
       - "3500:3000"
     links:
       - database
       - queue
-  second-server:
+    restart: always
+  second-server: # İkinci Express server için tanımlama
     build:
       context: ./server
       dockerfile: server.Dockerfile
-    ports:
+    ports: # port yönlendirmeleri
       - "3400:3000"
-  client:
+    restart: always
+  client: # react client için tanımlama
     build:
       context: ./client
       dockerfile: client.Dockerfile
-    ports:
+    ports: # port yönlendirmeleri
       - "3600:3000"
     links:
       - proxy
       - queue
+    restart: always
