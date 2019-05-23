@@ -24,6 +24,7 @@ export default function (state = INITIAL_STATE, action) {
             return { ...state }
             break;
         case `${FETCH_PRODUCT_LIST}_FULFILLED`:
+        console.log(action.payload.data.products)
             return {
                 ...state, products: action.payload.data.products,
                 PageSize: action.payload.data.pageSize,
