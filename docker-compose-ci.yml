@@ -1,0 +1,31 @@
+version: "3.1"
+
+services: # Tüm Docker container'larımız 'services' altında olacak
+  proxy:
+    image: "${CI_REGISTRY_IMAGE-local}/proxy:1.0.2"
+    build:
+      context: ./nginx
+  database: # Mongo server için tanımlama
+    image: "${CI_REGISTRY_IMAGE-local}/database:1.0.2"
+    build:
+      context: ./database
+  database-seed:
+    image: "${CI_REGISTRY_IMAGE-local}/database-seed:1.0.2"
+    build:
+      context: ./database-seed
+  rabbitmq: # Rabbit Mq server için tanımlama
+    image: "${CI_REGISTRY_IMAGE-local}/rabbitmq:1.0.2"
+    build:
+      context: ./rabbitmq
+  queue: # Queue server için tanımlama
+    image: "${CI_REGISTRY_IMAGE-local}/queue:1.0.2"
+    build:
+      context: ./queue
+  server: # İlk Express server için tanımlama
+    image: "${CI_REGISTRY_IMAGE-local}/server:1.0.2"
+    build:
+      context: ./server
+  client: # react client için tanımlama
+    image: "${CI_REGISTRY_IMAGE-local}/client:1.0.2"
+    build:
+      context: ./client

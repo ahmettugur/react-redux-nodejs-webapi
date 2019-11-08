@@ -2,7 +2,9 @@ version: "3.1"
 
 services: # Tüm Docker container'larımız 'services' altında olacak
   proxy:
-    image: registry.gitlab.com/ahmettugur/react-redux-nodejs-webapi/proxy:1.0.2
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
     ports:
       - "3300:80"
     links:
@@ -10,28 +12,38 @@ services: # Tüm Docker container'larımız 'services' altında olacak
       - second-server
     restart: always
   database: # Mongo server için tanımlama
-    image: registry.gitlab.com/ahmettugur/react-redux-nodejs-webapi/database:1.0.2
+    build:
+      context: ./mongo
+      dockerfile: Dockerfile
     ports: # port yönlendirmeleri
       - "9000:27017"
     restart: always
   database-seed:
-    image: registry.gitlab.com/ahmettugur/react-redux-nodejs-webapi/database-seed:1.0.2
+    build:
+      context: ./database-seed
+      dockerfile: Dockerfile
     links:
       - database
   rabbitmq: # Rabbit Mq server için tanımlama
-    image: registry.gitlab.com/ahmettugur/react-redux-nodejs-webapi/rabbitmq:1.0.2
+    build:
+      context: ./rabbitmq
+      dockerfile: Dockerfile
     ports: # port yönlendirmeleri
       - "9003:15672"
     restart: always
   queue: # Queue server için tanımlama
-    image: registry.gitlab.com/ahmettugur/react-redux-nodejs-webapi/queue:1.0.2
+    build:
+      context: ./queue
+      dockerfile: Dockerfile
     ports: # port yönlendirmeleri
       - "5000:3000"
     links:
       - rabbitmq
     restart: always
   first-server: # İlk Express server için tanımlama
-    image: registry.gitlab.com/ahmettugur/react-redux-nodejs-webapi/server:1.0.2
+    build:
+      context: ./server
+      dockerfile: Dockerfile
     ports: # port yönlendirmeleri
       - "3500:3000"
     links:
@@ -39,12 +51,16 @@ services: # Tüm Docker container'larımız 'services' altında olacak
       - queue
     restart: always
   second-server: # İkinci Express server için tanımlama
-    image: registry.gitlab.com/ahmettugur/react-redux-nodejs-webapi/server:1.0.2
+    build:
+      context: ./server
+      dockerfile: Dockerfile
     ports: # port yönlendirmeleri
       - "3400:3000"
     restart: always
   client: # react client için tanımlama
-    image: registry.gitlab.com/ahmettugur/react-redux-nodejs-webapi/client:1.0.2
+    build:
+      context: ./client
+      dockerfile: Dockerfile
     ports: # port yönlendirmeleri
       - "3600:3000"
     links:

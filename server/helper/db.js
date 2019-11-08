@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 module.exports = () => {
   mongoose.connect(
     "mongodb://database/store",
-    { useNewUrlParser: true }
+    { useNewUrlParser: true ,useUnifiedTopology: true}
   );
 
   mongoose.connection.on("open", () => {

@@ -1,0 +1,17 @@
+stages:
+  - build-image
+
+
+build-image:
+  stage: build-image
+  image: 
+    name: docker/compose:1.21.2
+    entrypoint: ["/bin/sh", "-c"]
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+  services:
+    - docker:dind
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker-compose -f docker-compose-ci.yml build
+    - docker-compose -f docker-compose-ci.yml push
